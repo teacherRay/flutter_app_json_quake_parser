@@ -22,33 +22,38 @@ void main() async {
                   padding: const EdgeInsets.all(14.5),
                   itemBuilder: (BuildContext context, int position) {
                     var format = new DateFormat.yMMMMd("en_US").add_jm();
-                    var date = format.format( new DateTime.fromMicrosecondsSinceEpoch(_features[position]['properties']['time']*1000,isUtc: true));
+                    var date = format.format(
+                        new DateTime.fromMicrosecondsSinceEpoch(
+                            _features[position]['properties']['time'] * 1000,
+                            isUtc: true));
+
+                    if (position.isOdd) return Divider();
+
                     return Column(
                         children: <Widget>[
                           Divider(height: 5.5),
 
-                         ListTile(
+                          ListTile(
                             title: Text(
                               "$date",
                               style: TextStyle(fontSize: 18.5),),
 
-                           subtitle: Text(
-                               "${_features[position]['properties']['place']}",
-                               style: TextStyle(
-                                   fontSize: 18.9,
-                                   color: Colors.grey,
-                                   fontStyle: FontStyle.italic)),
+                            subtitle: Text(
+                                "${_features[position]['properties']['place']}",
+                                style: TextStyle(
+                                    fontSize: 18.9,
+                                    color: Colors.grey,
+                                    fontStyle: FontStyle.italic)),
 
-                           leading: CircleAvatar(
-                             backgroundColor: Colors.purple,
-                             child: Text(
-                                 "${_features[position]['properties']['mag']}",
-                                 style: TextStyle(fontSize: 16.4,
-                                     color: Colors.white)
-                             ),
-                           ),
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.purple,
 
-                            onTap:() =>_showonTapMessage(context, _data[position]['body']),
+                              child: Text("${_features[position]['properties']['mag']}",
+                                  style: TextStyle(fontSize: 16.4,
+                                      color: Colors.white)
+                              ),
+                            ),
+                            onTap:(){_showonTapMessage(context, _features[position]['properties']['title']);},
                           ),
                         ]
                     );
@@ -62,7 +67,7 @@ void main() async {
 
 void _showonTapMessage(BuildContext context, String message) {
   var alert = AlertDialog(
-    title: Text("My App"),
+    title: Text ("Earthquake:"),
     content: Text(message),
     actions: <Widget>[
       FlatButton(
